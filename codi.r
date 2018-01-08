@@ -194,6 +194,13 @@ text(yres$year,yres$value,yres$label, cex=0.6, pos=1, col="blue")
 }
 }
 # Chunk 23
+res<-data.frame("","","","")
+names(res)<-c("Plataforma","Inici","Fi","Genere")
+res$Plataforma<-as.character(res$Plataforma)
+res$`Inici`<-as.character(res$`Inici`)
+res$`Fi`<-as.character(res$`Fi`)
+res$Genere<-as.character(res$Genere)
+first=1
 for (device in levels(games2$Device)){
 nr=nrow(games2[which(games2$Device==device ),])
 if (nr>1){
@@ -217,8 +224,17 @@ maxy=which.max(yres$year)
 gen=tail(names(sort(table(yres$genre))), 1)
 message("\nPlataforma: ",device,". Temps de vida: ",yres[miny,3],
 " fins ", yres[maxy,3],".\n Gènere dominant: ",gen)
+res[first,1]=device
+res[first,2]=yres[miny,3]
+res[first,3]=yres[maxy,3]
+res[first,4]=gen
+first=first+1
 }
 }
 # Chunk 24
+write.csv(games, file = "output/games.csv")
+write.csv(games1, file = "output/games1.csv")
+write.csv(gamesg1, file = "output/gamesg1.csv")
+write.csv2(res, file = "output/res.csv")
 detach(gamesg1)
 savehistory("~/sincron/dataScience/tipologia/pacs/games2/codi.r")
